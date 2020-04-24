@@ -79,7 +79,7 @@ exports.sourceNodes = (
     return;
   }
 
-  return getMentions({ token, domain, perPage: fetchLimit }).then(mentions => {
+  return getMentions({ token, perPage: fetchLimit }).then(mentions => {
     mentions.forEach(entry => createNode(WebMentionEntryNode(entry)));
   });
 };
