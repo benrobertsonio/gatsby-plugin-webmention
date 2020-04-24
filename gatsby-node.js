@@ -16,10 +16,9 @@ const WebMentionEntryNode = createNodeFactory(ENTRY_TYPE, entry => ({
 }));
 
 // get all mentions for a token and a specific domain
-const getMentions = async ({ domain, token, perPage = 10000 }) => {
+const getMentions = async ({ token, perPage = 10000 }) => {
   return fetch(
     `https://webmention.io/api/mentions.jf2?${queryString.stringify({
-      domain,
       token,
       "per-page": perPage
     })}`
@@ -35,7 +34,7 @@ const getMentions = async ({ domain, token, perPage = 10000 }) => {
 
 exports.sourceNodes = (
   { actions, reporter },
-  { token, domain, fetchLimit }
+  { token, fetchLimit }
 ) => {
   const { createNode, createTypes } = actions;
 
@@ -72,12 +71,11 @@ exports.sourceNodes = (
   `;
   createTypes(typeDefs);
 
-  if (!token || !domain) {
+  if (!token) {
     reporter.warn(
-      "`gatsby-plugin-webmention`: token and domain must be set to fetch webmentions"
+      "`gatsby-plugin-webmention`: token must be set to fetch webmentions"
     );
     reporter.warn(`is token set: ${!!token}`);
-    reporter.warn(`is domain set: ${!!domain}`);
     return;
   }
 
